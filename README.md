@@ -20,10 +20,3 @@ MongoDB: Document database for storing application data
 Express: Backend framework for handling HTTP requests and responses
 React: Frontend library for building user interfaces
 Node.js: JavaScript runtime for server-side execution
-
-# 🏁 Getting Started
-
-Clone this repository
-Install dependencies with npm install
-Configure MongoDB connection
-Start the development server with npm run dev
