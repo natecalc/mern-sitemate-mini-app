@@ -27,12 +27,3 @@ Clone this repository
 Install dependencies with npm install
 Configure MongoDB connection
 Start the development server with npm run dev
-
-# 📚 Learning Resources
-
-MongoDB Documentation
-Express Documentation
-React Documentation
-Node.js Documentation
-
-...and lots of YouTube
