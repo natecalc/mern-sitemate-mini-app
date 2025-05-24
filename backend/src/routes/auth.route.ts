@@ -4,6 +4,7 @@ import {
   logoutHandler,
   refreshHandler,
   registerHandler,
+  resetPasswordHandler,
   sendPasswordResetEmailHandler,
   verifyEmailHandler,
 } from "../controllers/auth.controller";
