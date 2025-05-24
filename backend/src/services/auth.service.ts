@@ -3,6 +3,7 @@ import {
   CONFLICT,
   INTERNAL_SERVER_ERROR,
   NOT_FOUND,
+  TOO_MANY_REQUESTS,
   UNAUTHORIZED,
 } from "../constants/http";
 import VerificationCodeType from "../constants/verificationCodeType";
@@ -10,8 +11,17 @@ import SessionModel from "../models/session.model";
 import UserModel from "../models/user.model";
 import VerificationCodeModel from "../models/verificationCode.model";
 import appAssert from "../utils/appAssert";
-import { ONE_DAY_MS, oneYearFromNow, thirtyDaysFromNow } from "../utils/date";
-import { getVerifyEmailTemplate } from "../utils/emailTemplates";
+import {
+  fiveMinutesAgo,
+  ONE_DAY_MS,
+  oneHourFromNow,
+  oneYearFromNow,
+  thirtyDaysFromNow,
+} from "../utils/date";
+import {
+  getPasswordResetTemplate,
+  getVerifyEmailTemplate,
+} from "../utils/emailTemplates";
 import {
   RefreshTokenPayload,
   refreshTokenSignOptions,
@@ -227,3 +237,58 @@ export const verifyEmail = async (code: string) => {
     user: user.omitPassword(),
   };
 };
+
+export const sendPasswordResetEmail = async (email: string) => {
+  // 1. get user by email
+  const user = await UserModel.findOne({
+    email,
+  });
+  appAssert(user, NOT_FOUND, "User not found");
+
+  // 2. check email rate limit and throw error if broken
+  const fiveMinAgo = fiveMinutesAgo();
+  const count = await VerificationCodeModel.countDocuments({
+    userId: user._id,
+    type: VerificationCodeType.PasswordReset,
+    createdAt: { $gt: fiveMinAgo },
+  });
+  appAssert(
+    count <= 1, // as we are limiting to 2 emails in 5 minutes we must check if count is less than or equal to 1
+    TOO_MANY_REQUESTS,
+    "Too many requests, please try again later."
+  );
+
+  // 3. create verification code
+  const expiresAt = oneHourFromNow();
+  const verificationCode = await VerificationCodeModel.create({
+    userId: user._id,
+    type: VerificationCodeType.PasswordReset,
+    expiresAt,
+  });
+
+  // 4. send email
+  const url = `${APP_ORIGIN}/password/reset?code=${verificationCode._id}&exp=${verificationCode.expiresAt.getTime()}`;
+
+  const { data, error } = await sendMail({
+    to: user.email,
+    ...getPasswordResetTemplate(url),
+  });
+  appAssert(
+    data?.id,
+    INTERNAL_SERVER_ERROR,
+    `${error?.name}- ${error?.message}`
+  );
+
+  // 5. return success message
+  return {
+    url,
+    emailId: data.id,
+    message: "Password reset email sent",
+  };
+};
+
+export const resetPassword = async (
+  code: string,
+  password: string,
+  confirmPassword: string
+) => {};
