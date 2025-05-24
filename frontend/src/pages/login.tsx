@@ -32,6 +32,11 @@ const Login = () => {
     onSuccess: () => {
       navigate(redirectUrl, { replace: true });
     },
+    onError: (error: any) => {
+      console.log(
+        error?.response?.data?.message || "Invalid email or password"
+      );
+    },
   });
 
   return (

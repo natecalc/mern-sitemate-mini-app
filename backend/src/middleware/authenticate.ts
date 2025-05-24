@@ -25,8 +25,6 @@ export const authenticate: RequestHandler = (req, res, next) => {
 
   const { userId, sessionId } = payload;
 
-  console.log(userId);
-
   // 3.
   req.userId = userId;
   req.sessionId = sessionId;
