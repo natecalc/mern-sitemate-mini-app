@@ -19,12 +19,11 @@ const handleZodError = (res: Response, error: z.ZodError) => {
 const handleAppError = (
   res: Response,
   { statusCode, message, errorCode }: AppError
-) => {
+) =>
   res.status(statusCode).json({
     message,
     errorCode,
   });
-};
 
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   console.log(`PATH: ${req.path}`, error);

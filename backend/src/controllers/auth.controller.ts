@@ -16,7 +16,7 @@ import {
   getRefreshTokenCookieOptions,
   setAuthCookies,
 } from "../utils/cookies";
-import { verifyToken } from "../utils/jwt";
+import { AccessTokenPayload, verifyToken } from "../utils/jwt";
 import {
   emailSchema,
   loginSchema,
@@ -75,7 +75,7 @@ export const loginHandler = catchErrors(async (req, res) => {
 export const logoutHandler = catchErrors(async (req, res) => {
   const accessToken = req.cookies.accessToken as string | undefined;
 
-  const { payload } = verifyToken(accessToken || "");
+  const { payload } = verifyToken<AccessTokenPayload>(accessToken || "");
 
   if (payload) {
     await SessionModel.findByIdAndDelete(payload.sessionId);

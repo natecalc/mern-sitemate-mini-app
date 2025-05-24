@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { compareValue, hashValue } from "../utils/bcrypt";
 
-export interface UserDocument extends mongoose.Document {
+export interface UserDocument extends mongoose.Document<Types.ObjectId> {
   email: string;
   password: string;
   verified: boolean;
