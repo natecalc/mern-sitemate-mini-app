@@ -1,14 +1,14 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import useDeleteSession from "../hooks/useDeleteSessions";
+import type { Session } from "../types";
 
-const SessionCard = (session: any) => {
+const SessionCard = ({ session }: { session: Session }) => {
   const { _id, createdAt, userAgent, isCurrent } = session;
 
-  console.log("SessionCard received:", _id); // Add this line
   const { deleteSession, isPending } = useDeleteSession(_id as string);
 
   return (
-    <Flex p={3} borderWidth="1px" borderRadius="md">
+    <Flex p={3} borderWidth="1px" borderRadius="md" w="full">
       <Box flex={1}>
         <Text fontWeight="bold" fontSize="sm" mb={1}>
           {new Date(createdAt).toLocaleString("en-US")}

@@ -5,13 +5,6 @@ import type { Session } from "../types";
 
 const Settings = () => {
   const { sessions, isPending, isSuccess, isError } = useSessions();
-
-  const sessionArr = Array.isArray(sessions)
-    ? sessions
-    : Object.values(sessions || {});
-
-  console.log("Settings page sessions:", sessionArr); // Debugging line
-
   return (
     <Container mt={16}>
       <Heading mb={6}>My Sessions</Heading>
@@ -19,9 +12,10 @@ const Settings = () => {
       {isError && <Text color="red.400">Failed to get sessions.</Text>}
       {isSuccess && sessions && (
         <VStack spacing={3} align="flex-start">
-          {sessionArr.map((session: Session) => (
-            <SessionCard key={session._id} session={session} />
-          ))}
+          {sessions &&
+            sessions.map((session: Session) => (
+              <SessionCard key={session._id} session={session} />
+            ))}
         </VStack>
       )}
     </Container>
