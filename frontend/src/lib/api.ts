@@ -1,5 +1,4 @@
 import API from "../config/apiClient";
-import type { User } from "../types";
 
 export const login = async (data: { email: string; password: string }) =>
   API.post("/auth/login", data);
@@ -30,7 +29,7 @@ export const resetPassword = async ({
     verificationCode,
   });
 };
-export const getUser = async (): Promise<User> => API.get("/user");
+export const getUser = async () => API.get("/user");
 
 export const getSessions = async () => API.get("/sessions");
 export const deleteSession = async (id: string) =>

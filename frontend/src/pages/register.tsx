@@ -27,7 +27,6 @@ export const Register = () => {
   const {
     mutate: signUp, // anytime we call signUp, it will call the login function
     isError,
-    error,
     isPending,
   } = useMutation({
     mutationFn: register,
