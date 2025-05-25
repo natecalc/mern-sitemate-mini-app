@@ -12,6 +12,7 @@ import {
   Text,
   Link as ChakraLink,
   Container,
+  Image,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "../lib/api";
@@ -121,6 +122,13 @@ export const Register = () => {
             </Text>
           </Stack>
         </Box>
+        <Image
+          src="/public/sitemate.svg"
+          alt="Sitemate Logo"
+          mt={8}
+          maxW="200px"
+          mx="auto"
+        />
       </Container>
     </Flex>
   );

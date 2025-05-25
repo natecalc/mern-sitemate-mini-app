@@ -12,6 +12,7 @@ import {
   Text,
   Link as ChakraLink,
   Container,
+  Image,
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../lib/api";
@@ -30,7 +31,9 @@ const Login = () => {
   } = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      navigate(redirectUrl, { replace: true });
+      navigate(redirectUrl, {
+        replace: true,
+      });
     },
     onError: (error: any) => {
       console.log(
@@ -102,6 +105,13 @@ const Login = () => {
             </Text>
           </Stack>
         </Box>
+        <Image
+          src="/public/sitemate.svg"
+          alt="Sitemate Logo"
+          mt={8}
+          maxW="200px"
+          mx="auto"
+        />
       </Container>
     </Flex>
   );
